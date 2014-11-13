@@ -5,8 +5,17 @@
 
 (function () {
 	"use strict";
-	/*document.addEventListener("DOMContentLoaded", loadStates)*/
-	window.onload = loadStates();
+	window.onload = function() {
+		loadStates();
+		document.getElementById("cancelButton").addEventListener("click", cancelCheck)
+	}
+
+	function cancelCheck() {
+		var leaveCheck = confirm("Do you really want to leave this fantasticly relevant, valuable offer?");
+		if(leaveCheck) {
+			window.location = "http://google.com"
+		}
+	}
 
 	function loadStates() {
 		var stateSelect = document.getElementsByName("state")[0];

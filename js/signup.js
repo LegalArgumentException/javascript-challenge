@@ -36,7 +36,7 @@
 	}
 
 	function onSubmit(evt) {
-		var valid = validateForm(this);
+		var valid = validateForm(evt);
 		if (!valid && evt.preventDefault) {
 			evt.preventDefault();
 		}
@@ -45,23 +45,76 @@
 	}
 
 	function validateForm(form) {
+		var valid = true;
+		var requiredTextForms = ["firstName", "lastName", "address1", "city", "state"];
+		if(document.getElementById("occupation").value == "other"){
+			requiredTextForms.push("occupationOther");
+		}
+		for (var i = 0; i < requiredTextForms.length; i++) {
+			var currentElement = document.getElementById(requiredTextForms[i]);
+			valid &= testValidText(currentElement);
+		}
+		console.log(document.getElementById("birthdate").value);
+		valid &= testValidZip();
+		valid &= testValidBirthday();
+		return valid;
+	}
 
-		try {
-			var valid = true;
-			var requiredTextForms = ["firstName, lastName, address1, city"];
-			for (var i = 0; i < requiredTextForms.length; i++) {
-				var currentForm = getElementById(requiredTextForms[i]);
-				if (currentForm.value.trim() == "") {
-					valid = false;
-					currentForm.className = "form-control invalid";
+	function testValidBirthday() {
+		var birthday = document.getElementById("birthdate");
+		var birthdateMessage = document.getElementById("birthdateMessage");
+		var currentDate = new Date();
+		var validDate = true;
+
+		if (birthday.value.trim() != "") {
+			var birthdayInfo = (birthday.value).split("-");
+			if(currentDate.getFullYear() - birthdayInfo[0] < 13) {
+				validDate = false;
+			} else if (currentDate.getFullYear() - birthdayInfo[0] == 13) {
+				if((currentDate.getMonth() + 1) - birthdayInfo[1] < 0) {
+					validDate = false;
+				} else if((currentDate.getMonth() + 1) - birthdayInfo[1] == 0) {
+					if(currentDate.getDate() - birthdayInfo[2] < 0) {
+						validDate = false;
+					}
 				}
 			}
-			alert("made it!");
-		} catch (err) {
-			alert(err);
-			form.preventDefault();
-			return valid;
+		} else {
+			validDate = false;
 		}
+
+		if (!validDate) {
+			birthday.className = "form-control invalid";
+			birthdateMessage.innerHTML = "You must be at least 13 years or older to sign up!";
+		} else {
+			birthday.className = "form-control";
+			birthdateMessage.innerHTML = "";
+		}
+
+		return validDate;
+
+	}
+
+	function testValidText(element) {
+		var elementValue = element.value.trim();
+		if (elementValue == "") {
+			element.className = "form-control invalid";
+		} else {
+			element.className = "form-control";
+		}
+		return Boolean(elementValue);
+	}
+
+	function testValidZip() {
+		var zipCode = document.getElementById("zip");
+		var regEx = new RegExp('^\\d{5}$');
+		var zipTest = regEx.test(zipCode.value);
+		if(zipTest) {
+			zipCode.className = "form-control";
+		} else {
+			zipCode.className = "form-control invalid"
+		};
+		return zipTest;
 	}
 
 }) ();

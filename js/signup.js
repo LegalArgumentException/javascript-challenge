@@ -1,19 +1,21 @@
 /*
-    Signup Form Script
-    This script will load the state select list and validate the form before submission
+    Author: Tanner Garrett
+    Date: 	10/25/2014
+    TA:  	Zachary Balter
+    This JavaScript file contains all the necessary functionality for a signup page to validate and successfully submit information.
 */
 
 (function () {
 	"use strict";
 	window.onload = function() {
 		loadStates();
-		document.getElementById("cancelButton").addEventListener("click", cancelCheck)
-	}
+		document.getElementById("cancelButton").addEventListener("click", cancelCheck);
+	};
 
 	function cancelCheck() {
 		var leaveCheck = confirm("Do you really want to leave this fantasticly relevant, valuable offer?");
 		if(leaveCheck) {
-			window.location = "http://google.com"
+			window.location = "http://google.com";
 		}
 	}
 
@@ -22,7 +24,7 @@
 		for(var i = 0; i < usStates.length; i++) {
 			var state = usStates[i];
 			var stateOption = document.createElement("OPTION");
-			var stateText = document.createTextNode(state.name)
+			var stateText = document.createTextNode(state.name);
 			stateOption.value = state.name;
 			stateOption.value = state.code;
 			stateOption.appendChild(stateText);
@@ -30,7 +32,7 @@
 		}
 
 		var occupationForm = document.getElementById("occupation");
-		occupationForm.addEventListener("change", function () {occupationCheck(occupationForm)});
+		occupationForm.addEventListener("change", function () {occupationCheck(occupationForm);});
 		var signup = document.getElementById("signup");
 		signup.addEventListener("submit", onSubmit);	
 	}
@@ -75,14 +77,14 @@
 		var currentDate = new Date();
 		var validDate = true;
 
-		if (birthday.value.trim() != "") {
+		if (birthday.value.trim() !== "") {
 			var birthdayInfo = (birthday.value).split("-");
 			if(currentDate.getFullYear() - birthdayInfo[0] < 13) {
 				validDate = false;
 			} else if (currentDate.getFullYear() - birthdayInfo[0] == 13) {
 				if((currentDate.getMonth() + 1) - birthdayInfo[1] < 0) {
 					validDate = false;
-				} else if((currentDate.getMonth() + 1) - birthdayInfo[1] == 0) {
+				} else if((currentDate.getMonth() + 1) - birthdayInfo[1] === 0) {
 					if(currentDate.getDate() - birthdayInfo[2] < 0) {
 						validDate = false;
 					}
@@ -106,7 +108,7 @@
 
 	function testValidText(element) {
 		var elementValue = element.value.trim();
-		if (elementValue == "") {
+		if (elementValue === "") {
 			element.className = "form-control invalid";
 		} else {
 			element.className = "form-control";
@@ -121,8 +123,8 @@
 		if(zipTest) {
 			zipCode.className = "form-control";
 		} else {
-			zipCode.className = "form-control invalid"
-		};
+			zipCode.className = "form-control invalid";
+		}
 		return zipTest;
 	}
 
